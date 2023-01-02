@@ -1,0 +1,54 @@
+Question - Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+You can return the answer in any order.
+
+// JAVA Solution
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Queue> dataMap = new HashMap<>();
+        
+        // created data map along with the indexes
+        for(int i=0; i<nums.length; i++){
+            Queue<Integer> q = dataMap.get(nums[i]);
+            if(q == null){
+                Queue<Integer> qq = new LinkedList<>();
+                qq.add(i);
+                dataMap.put(nums[i], qq);
+            } else{
+                q.add(i);
+                dataMap.put(nums[i], q);
+            }
+            
+        }    
+
+        Arrays.sort(nums);
+
+        int begin = 0;
+        int end = nums.length -1;
+
+        int[] result = new int[2];
+
+        while(begin< end){
+
+            int beginData = nums[begin];
+            int endData = nums[end];
+            int sum = beginData + endData;
+
+            if(sum == target){
+                result[0] = (int) dataMap.get(beginData).poll();
+                result[1] = (int) dataMap.get(endData).poll();
+                break;
+            } else if(sum> target){
+                end--;
+            } else{
+                begin++;
+            }
+        }
+
+        return result;
+
+    }
+}
